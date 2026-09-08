@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customer Segmentation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+  <div class="logo"><span class="logo-mark">S</span><div><strong>Segma</strong><small>Customer Segmentation</small></div></div>
+  <nav><a class="active" href="#overview">⌂ <span>Overview</span></a><a href="#upload">↥ <span>Analyze data</span></a><a href="#visuals">◫ <span>Visual analytics</span></a><a href="#segments">◎ <span>Segments</span></a></nav>
+  <div class="side-note"><span class="status-dot"></span><div><b>Local analysis</b><small>JavaScript · K-Means · IQR</small></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><span class="eyebrow">Customer Segmentation</span><h1>Turn customer data into <em>clear segments.</em></h1><p>Upload a CSV and analyze it locally with vanilla JavaScript. No Python server, no database, and no data leaves your browser.</p></div><button id="resetBtn" class="ghost-btn" type="button">↻ New analysis</button></header>
+<section id="overview" class="stats-grid">
+<article class="stat"><div class="stat-icon">▤</div><div><span>Rows analyzed</span><strong id="kpiRows">—</strong></div></article>
+<article class="stat"><div class="stat-icon">◎</div><div><span>Segments</span><strong id="kpiClusters">—</strong></div></article>
+<article class="stat"><div class="stat-icon">◈</div><div><span>Best K</span><strong id="kpiBestK">—</strong></div></article>
+<article class="stat"><div class="stat-icon">✓</div><div><span>Outliers</span><strong id="kpiOutliers">—</strong></div></article>
+</section>
+<section id="upload" class="panel upload-panel">
+<div class="panel-head"><div><span class="step">01</span><div><h2>Import customer data</h2><p>CSV only · processed locally in your browser · no upload endpoint required.</p></div></div></div>
+<form id="uploadForm"><label class="dropzone" id="dropzone" for="csvFile"><input id="csvFile" type="file" accept=".csv,text/csv"><div class="upload-symbol">↑</div><strong id="dropTitle">Drop your CSV here</strong><span id="fileName">or click to browse</span><small>CSV only · maximum 10 MB</small></label>
+<div class="controls"><div class="field"><label for="clusters">Clusters</label><select id="clusters"><option value="">Auto-select (best silhouette)</option><option value="2">2 clusters</option><option value="3">3 clusters</option><option value="4">4 clusters</option><option value="5">5 clusters</option><option value="6">6 clusters</option><option value="7">7 clusters</option><option value="8">8 clusters</option><option value="9">9 clusters</option><option value="10">10 clusters</option></select></div><button class="primary-btn" id="analyzeBtn" type="submit"><span>Analyze customers</span><b>→</b></button></div></form><div id="error" class="error hidden"></div>
+</section>
+<section id="results" class="hidden">
+<div class="result-banner"><div><span class="eyebrow">ANALYSIS COMPLETE</span><h2>Customer segments discovered</h2><p id="datasetInfo"></p></div><div class="recommend-chip">Recommended K <strong id="recommendedK">—</strong></div></div>
+<section class="panel"><div class="panel-head"><div><span class="step">02</span><div><h2>Segment overview</h2><p>High-level characteristics of each customer group.</p></div></div></div><div id="clusterCards" class="cluster-grid"></div></section>
+<section class="insight-strip" id="insightStrip"></section>
+<section id="visuals" class="visual-grid">
+<article class="panel chart-panel wide"><div class="chart-title"><div><h2>Customer map</h2><p>Annual income vs. spending score</p></div><span class="chart-note">Each dot = customer</span></div><div class="canvas-wrap"><canvas id="scatterChart"></canvas></div><div id="scatterLegend" class="legend"></div></article>
+<article class="panel chart-panel"><div class="chart-title"><div><h2>Cluster size</h2><p>Customers per segment</p></div></div><div class="canvas-wrap"><canvas id="sizeChart"></canvas></div></article>
+<article class="panel chart-panel"><div class="chart-title"><div><h2>Model quality</h2><p>Silhouette score by K</p></div></div><div class="canvas-wrap"><canvas id="silhouetteChart"></canvas></div></article>
+<article class="panel chart-panel wide"><div class="chart-title"><div><h2>Elbow method</h2><p>Inertia helps identify a practical K</p></div></div><div class="canvas-wrap"><canvas id="elbowChart"></canvas></div></article>
+</section>
+<section class="panel outlier-panel"><div class="panel-head"><div><span class="step">03</span><div><h2>Outlier review</h2><p>IQR-based detection for income and spending score.</p></div></div><span id="outlierBadge" class="pill">0 outliers</span></div><div id="outlierSummary"></div><div id="outlierDetails" class="hidden"><h3>Detected records</h3><div class="table-wrap"><table><thead><tr><th>Row</th><th>Income</th><th>Spending</th><th>Reason</th></tr></thead><tbody id="outlierBody"></tbody></table></div></div></section>
+<section id="segments" class="panel table-panel"><div class="panel-head"><div><span class="step">04</span><div><h2>Segment playbook</h2><p>Business interpretation generated from cluster behavior.</p></div></div></div><div class="table-wrap"><table><thead><tr><th>Segment</th><th>Customers</th><th>Avg. income</th><th>Avg. spending</th><th>Avg. age</th><th>Recommended action</th></tr></thead><tbody id="resultsBody"></tbody></table></div></section>
+
+</section>
+<footer>Customer Segmentaion</footer>
+</main></div>
+<script src="app.js"></script>
+</body></html>
